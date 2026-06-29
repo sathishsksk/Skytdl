@@ -19,6 +19,10 @@ COPY .env.example .env
 ENV PYTHONPATH=/app/src
 ENV TMPFILE_PATH=/app/tmp
 
+# Koyeb health check port (default 8000, override via PORT env var)
+ENV PORT=8000
+EXPOSE 8000
+
 # Create temporary directory
 RUN mkdir -p /app/tmp
 
