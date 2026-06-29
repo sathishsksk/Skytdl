@@ -14,6 +14,7 @@ from engine.instagram import InstagramDownload
 from engine.krakenfiles import KrakenFilesDownload
 from engine.pixeldrain import PixelDrainDownload
 from utils import is_youtube, is_instagram, is_krakenfiles, is_pixeldrain, is_direct_link
+from health import start_health_server
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -124,4 +125,5 @@ async def handle_url(client: Client, message: Message):
     await downloader.start()
 
 if __name__ == "__main__":
+    start_health_server()   # ← Koyeb health check (runs in background thread)
     app.run()
