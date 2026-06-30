@@ -6,6 +6,32 @@ This is a Telegram bot that downloads videos/audio from YouTube and other platfo
 
 [![Deploy to Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)](https://app.koyeb.com/deploy?type=git&repository=github.com/sathishsksk/Skytdl&branch=main&name=skytdl)
 
+## Deployment on Koyeb (One-Click)
+
+Just click the **Deploy to Koyeb** button above. Koyeb reads the `koyeb.yaml` file in this repo and will show you a form asking for these values — **you don't need to know what they mean in advance**, just fill in the four required ones:
+
+| Variable | Required? | What to put |
+|----------|-----------|-------------|
+| `APP_ID` | ✅ Required | Get from [my.telegram.org](https://my.telegram.org) → API Development Tools |
+| `APP_HASH` | ✅ Required | Same page as above |
+| `BOT_TOKEN` | ✅ Required | Get from [@BotFather](https://t.me/BotFather) on Telegram |
+| `OWNER` | ✅ Required | Your numeric Telegram user ID (get it from [@userinfobot](https://t.me/userinfobot)) — comma-separate if multiple admins |
+| `DB_DSN` | Pre-filled | Leave as default (`sqlite:///db.sqlite`) unless using MySQL |
+| `AUDIO_FORMAT` | Pre-filled | Leave as default (`m4a`) |
+| `TG_NORMAL_MAX_SIZE` | Pre-filled | Max upload size in bytes, default 2GB |
+| `FREE_DOWNLOAD` | Pre-filled | Free downloads/user/day, default 3 |
+| `ENABLE_FFMPEG` | Pre-filled | Leave as default (`True`) |
+| `PORT` | Pre-filled | Leave as default (`8000`) — used by the health check |
+
+After filling the required fields, click **Deploy**. Koyeb builds the Dockerfile, starts the bot, and verifies it's alive via the built-in `/health` endpoint automatically — no extra dashboard configuration needed.
+
+### Manual Deploy (alternative)
+
+1. Fork this repo.
+2. On [Koyeb](https://app.koyeb.com), create an app → connect your GitHub fork.
+3. Koyeb auto-detects `koyeb.yaml` and prompts for the same variables as above.
+4. Deploy.
+
 ## Features
 
 - Full range of video resolutions (2160p → 144p)
@@ -13,45 +39,16 @@ This is a Telegram bot that downloads videos/audio from YouTube and other platfo
 - Supports YouTube, Instagram, Pixeldrain, KrakenFiles, and direct links
 - User settings (quality and send format)
 - Progress indication
-- Deployable on Koyeb
+- One-click Koyeb deploy with guided env var setup
 - Built-in `/health` endpoint for Koyeb health checks
 
-## Deployment on Koyeb
-
-### One-Click Deploy
-
-Click the **Deploy to Koyeb** button above, then set the required environment variables in the Koyeb dashboard.
-
-### Manual Deploy
-
-1. Fork this repository.
-2. On [Koyeb](https://app.koyeb.com), create a new app → connect your GitHub repo.
-3. Set the required environment variables (see `.env.example`).
-4. Koyeb will build using the `Dockerfile` automatically.
-5. Set the **health check path** to `/health` and **port** to `8000` in the Koyeb service settings.
-
-## Environment Variables
-
-| Variable | Description |
-|----------|-------------|
-| APP_ID | Telegram API ID |
-| APP_HASH | Telegram API hash |
-| BOT_TOKEN | Your bot token |
-| OWNER | Admin user IDs (comma-separated) |
-| DB_DSN | Database URL (e.g., sqlite:///db.sqlite) |
-| AUDIO_FORMAT | Audio output format (m4a, mp3, etc.) |
-| PORT | Health check server port (default: `8000`) |
-| ... | See `.env.example` for more |
-
 ## Health Check
-
-The bot exposes a lightweight HTTP health endpoint used by Koyeb to verify the service is running:
 
 ```
 GET /health  →  200 OK  {"status": "ok"}
 ```
 
-This runs automatically in the background when the bot starts — no extra setup needed.
+Runs automatically in the background — no setup needed, already wired into `koyeb.yaml`.
 
 ## Usage
 

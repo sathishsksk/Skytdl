@@ -1,0 +1,57 @@
+name: skytdl
+
+services:
+  - name: skytdl-bot
+    type: WEB
+    instance_type: nano
+    regions:
+      - was
+    ports:
+      - port: 8000
+        protocol: http
+    routes:
+      - path: /
+        port: 8000
+    health_checks:
+      - http:
+          path: /health
+          port: 8000
+    docker:
+      dockerfile: Dockerfile
+    env:
+      - key: APP_ID
+        scope: build_and_runtime
+        type: secret
+      - key: APP_HASH
+        scope: build_and_runtime
+        type: secret
+      - key: BOT_TOKEN
+        scope: build_and_runtime
+        type: secret
+      - key: OWNER
+        scope: build_and_runtime
+        type: secret
+      - key: DB_DSN
+        scope: build_and_runtime
+        type: secret
+        value: "sqlite:///db.sqlite"
+      - key: AUDIO_FORMAT
+        scope: build_and_runtime
+        type: secret
+        value: "m4a"
+      - key: TG_NORMAL_MAX_SIZE
+        scope: build_and_runtime
+        type: secret
+        value: "2000000000"
+      - key: FREE_DOWNLOAD
+        scope: build_and_runtime
+        type: secret
+        value: "3"
+      - key: ENABLE_FFMPEG
+        scope: build_and_runtime
+        type: secret
+        value: "True"
+      - key: PORT
+        scope: build_and_runtime
+        type: secret
+        value: "8000"
