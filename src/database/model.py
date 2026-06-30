@@ -5,6 +5,9 @@ from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 from config import DB_DSN
 
+# Normalize DSN: SQLAlchemy needs an explicit driver name for MySQL.
+# Plain "mysql://" defaults to MySQLdb (not installed here) — we use
+# pymysql instead, which is already in requirements.txt.
 engine = create_engine(DB_DSN)
 Session = sessionmaker(bind=engine)
 Base = declarative_base()
@@ -12,8 +15,8 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = "users"
     chat_id = Column(Integer, primary_key=True)
-    quality = Column(String, default="1080p")
-    format = Column(String, default="video")
+    quality = Column(String(20), default="1080p")
+    format = Column(String(20), default="video")
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
