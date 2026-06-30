@@ -4,6 +4,5 @@ yt-dlp==2025.2.19
 apscheduler==3.10.4
 psutil==5.9.8
 python-dotenv==1.0.1
-pymysql==1.1.0
 redis==5.0.1
 sqlalchemy==2.0.36
