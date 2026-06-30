@@ -90,8 +90,20 @@ class YoutubeDownload(BaseDownloader):
 
         # YouTube-specific cookies / PO Token
         if is_youtube(self._url):
+            # cookiesfrombrowser only makes sense if you actually run a
+            # real browser profile inside the container (rare on Koyeb,
+            # which is headless). Skip silently if BROWSERS is unset.
             if browsers := os.getenv("BROWSERS"):
-                ydl_opts["cookiesfrombrowser"] = browsers.split(",")
+                # NOTE: cookiesfrombrowser expects ONE browser as a tuple
+                # (browser, profile, keyring, container) — NOT a list of
+                # multiple browser names. Passing "chrome,firefox" made
+                # yt-dlp treat "firefox" as a *profile name* inside
+                # Chrome's config dir, which doesn't exist → crash.
+                # Use only the first browser listed.
+                browser_name = browsers.split(",")[0].strip()
+                if browser_name:
+                    ydl_opts["cookiesfrombrowser"] = (browser_name,)
+
             if os.path.isfile("youtube-cookies.txt") and os.path.getsize("youtube-cookies.txt") > 100:
                 ydl_opts["cookiefile"] = "youtube-cookies.txt"
             if potoken := os.getenv("POTOKEN"):
@@ -118,4 +130,3 @@ class YoutubeDownload(BaseDownloader):
         if formats is not None:
             default_formats = formats + self._setup_formats()
         self._download(default_formats)
-        self._upload()
